@@ -1,0 +1,49 @@
+{
+  "project": {
+    "name": "Blue Agent",
+    "emoji": "🟦",
+    "twitter": "@blocky_agent",
+    "telegram_community": "https://t.me/blueagent_hub",
+    "website": "https://blueagent.xyz"
+  },
+  "token": {
+    "symbol": "BLUEAGENT",
+    "name": "$BLUEAGENT",
+    "contract": "0xf895783b2931c919955e18b5e3343e7c7c456ba3",
+    "pool": "0x3245fb3a2034e38c1dfffc2916e2d4e61a070bfc5b822f4fa2236e801a108c8d",
+    "chain": "base",
+    "tokens_per_point": 10000
+  },
+  "telegram": {
+    "group_id": -1003863880093,
+    "bot_username": "Blockyagent_beta_bot",
+    "threads": {
+      "alpha": 15,
+      "trades": 60,
+      "feed": 18,
+      "meme": 9,
+      "builders": 5
+    }
+  },
+  "rewards": {
+    "checkin_pts": 5,
+    "checkin_streak_bonus_pts": 10,
+    "streak_bonus_days": 7,
+    "referrer_pts": 50,
+    "referred_pts": 10,
+    "submit_project_pts": 20,
+    "claim_min_pts": 100,
+    "claim_cooldown_days": 7,
+    "streak_multiplier": {
+      "tier1_days": 7,
+      "tier1_mult": 1.5,
+      "tier2_days": 14,
+      "tier2_mult": 2.0
+    }
+  },
+  "auto_posts": {
+    "alpha_signals_interval_ms": 7200000,
+    "trending_interval_ms": 14400000,
+    "trades_enabled": true
+  }
+}

@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env
+data/users.json
+data/referrals.json
+data/projects.json
+*.js.map
