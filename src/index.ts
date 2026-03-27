@@ -849,7 +849,7 @@ bot.onText(/\/help/, async (msg) => {
 // =======================
 // OWNER-ONLY COMMANDS
 // =======================
-const OWNER_ID = 6614397596
+const OWNER_ID = parseInt(process.env.OWNER_TELEGRAM_ID || '0')
 
 function isOwner(msg: any): boolean {
   return msg.from?.id === OWNER_ID
@@ -974,6 +974,99 @@ async function sendAdminPanel(chatId: number) {
 bot.onText(/\/admin/, async (msg) => {
   if (!isOwner(msg)) return
   await sendAdminPanel(msg.chat.id)
+})
+
+// =======================
+// /threads — detect topic thread IDs
+// =======================
+const threadDetectSessions = new Set<number>() // tracking owners waiting for forward
+
+bot.onText(/\/threads/, async (msg) => {
+  if (!isOwner(msg)) return
+  const chatId = msg.chat.id
+  threadDetectSessions.add(chatId)
+
+  await bot.sendMessage(chatId,
+    `🔍 <b>Thread ID Detector</b>\n\n` +
+    `To find thread IDs for your group topics:\n\n` +
+    `1️⃣ Go to your Telegram group\n` +
+    `2️⃣ Click on the topic you want to detect\n` +
+    `3️⃣ Send any message in that topic\n` +
+    `4️⃣ <b>Forward that message to me here</b>\n\n` +
+    `I'll tell you the thread ID. Repeat for each topic.\n\n` +
+    `<i>Send /done when finished to update config</i>`,
+    { parse_mode: 'HTML' } as any
+  )
+})
+
+// Handle forwarded messages for thread detection
+bot.on('message', async (msg) => {
+  const ownerId = OWNER_ID
+  if (msg.chat.id !== ownerId) return
+  if (!threadDetectSessions.has(ownerId)) return
+  if (msg.text === '/done') {
+    threadDetectSessions.delete(ownerId)
+    await bot.sendMessage(ownerId, '✅ Thread detection ended. Update your config.json with the IDs above.')
+    return
+  }
+
+  // Check if forwarded from a group topic
+  const fwdChat = (msg.forward_from_chat || (msg as any).forward_origin)
+  const threadId = (msg as any).forward_from_message_id
+    ? (msg as any).message_thread_id || null
+    : null
+
+  // Get thread ID from forwarded message
+  const fwdThreadId = (msg as any).forward_from_message_id || null
+
+  if (msg.forward_from_chat) {
+    const groupName = (msg.forward_from_chat as any)?.title || 'your group'
+    const groupId = (msg.forward_from_chat as any)?.id || '?'
+
+    // Try to extract thread from forward
+    await bot.sendMessage(ownerId,
+      `📋 <b>Forwarded from:</b> ${groupName}\n` +
+      `🆔 <b>Group ID:</b> <code>${groupId}</code>\n\n` +
+      `⚠️ Thread ID detection from forwards is limited.\n\n` +
+      `<b>Better method:</b>\n` +
+      `Add me to your group and send:\n` +
+      `<code>/detectthread</code> in each topic\n` +
+      `→ I'll reply with the thread ID directly`,
+      { parse_mode: 'HTML' } as any
+    )
+  }
+})
+
+// /detectthread — use inside group topic to get thread ID
+bot.onText(/\/detectthread/, async (msg) => {
+  const chatId = msg.chat.id
+  const threadId = (msg as any).message_thread_id
+
+  if (!threadId) {
+    await bot.sendMessage(chatId,
+      `ℹ️ This message has no thread ID.\nThis is either General (thread 1) or topics are not enabled.`,
+      { parse_mode: 'HTML', message_thread_id: threadId } as any
+    )
+    return
+  }
+
+  // Reply in same thread
+  await bot.sendMessage(chatId,
+    `✅ <b>Thread ID detected!</b>\n\n` +
+    `This topic's thread ID: <code>${threadId}</code>\n\n` +
+    `Add this to your <code>config.json</code>:\n` +
+    `<code>"your_topic_name": ${threadId}</code>`,
+    { parse_mode: 'HTML', message_thread_id: threadId } as any
+  )
+
+  // Also DM owner
+  try {
+    await bot.sendMessage(OWNER_ID,
+      `📍 Thread detected in <b>${(msg.chat as any).title || 'group'}</b>:\n` +
+      `Thread ID: <code>${threadId}</code>`,
+      { parse_mode: 'HTML' } as any
+    )
+  } catch {}
 })
 
 // /test — send test prompt to bot
