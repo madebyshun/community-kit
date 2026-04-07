@@ -29,7 +29,8 @@ if (!process.env.OWNER_TELEGRAM_ID) {
 }
 
 // ── Load config ──
-const CONFIG_FILE = path.join(__dirname, '..', 'config.json')
+const IS_DEMO = process.env.DEMO_MODE === 'true'
+const CONFIG_FILE = path.join(__dirname, '..', IS_DEMO ? 'config.demo.json' : 'config.json')
 const CFG = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'))
 const TOKEN_SYMBOL = CFG.token.symbol          // e.g. BLUEAGENT
 const TOKEN_NAME   = CFG.token.name            // e.g. $BLUEAGENT
@@ -95,7 +96,8 @@ const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true })
 
 // ── Hello World Banner ──
 bot.getMe().then(me => {
-  console.log('\n🟦 Blue Agent Community Kit')
+  console.log(`\n${IS_DEMO ? '🎮 DEMO MODE — ' : ''}🟦 Blue Agent Community Kit`)
+  if (IS_DEMO) console.log('⚠️  Running with fake data. Not connected to real Telegram group.')
   console.log('────────────────────────────────')
   console.log(`✅ Bot online: @${me.username}`)
   console.log(`📌 Project: ${CFG.project.name} (${CFG.token.symbol})`)

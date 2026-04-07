@@ -1,0 +1,44 @@
+{
+  "_template": "gaming-guild",
+  "_description": "Best for: gaming communities, guilds. Quests, leaderboard, raffle, mini-games.",
+  "project": {
+    "name": "My Gaming Guild",
+    "emoji": "🎮",
+    "twitter": "@myguild",
+    "telegram_community": "https://t.me/myguild",
+    "website": "https://myguild.xyz"
+  },
+  "token": {
+    "symbol": "GUILD",
+    "name": "$GUILD",
+    "contract": "0x_your_token_contract",
+    "pool": "0x_your_pool_address",
+    "chain": "base",
+    "tokens_per_point": 500
+  },
+  "telegram": {
+    "group_id": -1000000000000,
+    "bot_username": "yourguildbot",
+    "threads": { "alpha": 0, "trades": 0, "feed": 0, "meme": 0, "builders": 0 }
+  },
+  "rewards": {
+    "checkin_pts": 10,
+    "checkin_streak_bonus_pts": 20,
+    "streak_bonus_days": 7,
+    "referrer_pts": 100,
+    "referred_pts": 25,
+    "submit_project_pts": 30,
+    "claim_min_pts": 200,
+    "claim_cooldown_days": 7,
+    "streak_multiplier": { "tier1_days": 7, "tier1_mult": 2.0, "tier2_days": 14, "tier2_mult": 3.0 }
+  },
+  "tier": "seed",
+  "features": {
+    "gem_signals": false, "raffle": true, "price_alerts": false,
+    "scheduled_posts": true, "mini_games": true, "trade_tracker": false,
+    "whale_alert": false, "token_claim": false, "broadcast_dm": false,
+    "flash_quests": true, "bounties": false, "proposal_voting": false,
+    "x_quests": false, "analytics_export": false, "token_gate": false, "custom_branding": false
+  },
+  "auto_posts": { "alpha_signals_interval_ms": 0, "trending_interval_ms": 0, "trades_enabled": false }
+}

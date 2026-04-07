@@ -1,0 +1,44 @@
+{
+  "_template": "builder-dao",
+  "_description": "Best for: DAOs, builder communities. Proposals, bounties, project directory, governance.",
+  "project": {
+    "name": "My Builder DAO",
+    "emoji": "🏗️",
+    "twitter": "@mybuilderdao",
+    "telegram_community": "https://t.me/mybuilderdao",
+    "website": "https://mybuilderdao.xyz"
+  },
+  "token": {
+    "symbol": "BUILD",
+    "name": "$BUILD",
+    "contract": "0x_your_token_contract",
+    "pool": "0x_your_pool_address",
+    "chain": "base",
+    "tokens_per_point": 2000
+  },
+  "telegram": {
+    "group_id": -1000000000000,
+    "bot_username": "yourdaobot",
+    "threads": { "alpha": 0, "trades": 0, "feed": 0, "meme": 0, "builders": 0 }
+  },
+  "rewards": {
+    "checkin_pts": 3,
+    "checkin_streak_bonus_pts": 5,
+    "streak_bonus_days": 7,
+    "referrer_pts": 30,
+    "referred_pts": 10,
+    "submit_project_pts": 50,
+    "claim_min_pts": 500,
+    "claim_cooldown_days": 14,
+    "streak_multiplier": { "tier1_days": 7, "tier1_mult": 1.2, "tier2_days": 30, "tier2_mult": 1.5 }
+  },
+  "tier": "pro",
+  "features": {
+    "gem_signals": false, "raffle": false, "price_alerts": false,
+    "scheduled_posts": true, "mini_games": false, "trade_tracker": false,
+    "whale_alert": false, "token_claim": true, "broadcast_dm": true,
+    "flash_quests": true, "bounties": true, "proposal_voting": true,
+    "x_quests": false, "analytics_export": false, "token_gate": false, "custom_branding": false
+  },
+  "auto_posts": { "alpha_signals_interval_ms": 0, "trending_interval_ms": 0, "trades_enabled": false }
+}
