@@ -41,6 +41,25 @@
       "tier2_mult": 2.0
     }
   },
+  "tier": "free",
+  "features": {
+    "gem_signals": false,
+    "raffle": false,
+    "price_alerts": false,
+    "scheduled_posts": false,
+    "mini_games": false,
+    "trade_tracker": false,
+    "whale_alert": false,
+    "token_claim": false,
+    "broadcast_dm": false,
+    "flash_quests": false,
+    "bounties": false,
+    "proposal_voting": false,
+    "x_quests": false,
+    "analytics_export": false,
+    "token_gate": false,
+    "custom_branding": false
+  },
   "auto_posts": {
     "alpha_signals_interval_ms": 7200000,
     "trending_interval_ms": 14400000,
