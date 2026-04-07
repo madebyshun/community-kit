@@ -16,6 +16,34 @@ process.on('unhandledRejection', (reason: any) => {
   console.error('[UNHANDLED REJECTION]', reason?.message || reason)
 })
 
+// ── License Key Validation ──
+async function validateLicense(): Promise<{ tier: string; valid: boolean }> {
+  const key = process.env.COMMUNITY_KIT_LICENSE || ''
+  if (!key) return { tier: 'free', valid: true }
+  const match = key.match(/^ck_(seed|pro|scale)_(\d+)mo_[A-Z0-9]+$/)
+  if (!match) {
+    console.warn('⚠️  Invalid license key format. Running as Free tier.')
+    return { tier: 'free', valid: false }
+  }
+  console.log(`🔑 License: ${key} → ${match[1].toUpperCase()} tier activated`)
+  return { tier: match[1], valid: true }
+}
+
+// Auto-activate tier from license key
+validateLicense().then(({ tier }) => {
+  if (tier !== 'free' && !CFG.tier || CFG.tier === 'free') {
+    // Upgrade tier from license key
+    const tierFeatures: Record<string, string[]> = {
+      seed: ['gem_signals', 'raffle', 'price_alerts', 'scheduled_posts', 'mini_games'],
+      pro: ['gem_signals', 'raffle', 'price_alerts', 'scheduled_posts', 'mini_games', 'token_claim', 'broadcast_dm', 'flash_quests', 'bounties', 'proposal_voting'],
+      scale: ['gem_signals', 'raffle', 'price_alerts', 'scheduled_posts', 'mini_games', 'token_claim', 'broadcast_dm', 'flash_quests', 'bounties', 'proposal_voting', 'analytics_export', 'token_gate', 'custom_branding']
+    }
+    const features = tierFeatures[tier] || []
+    features.forEach(f => { FEATURES[f] = true })
+    console.log(`✅ ${tier.toUpperCase()} features unlocked via license key`)
+  }
+}).catch(() => {})
+
 // ── Startup validation ──
 if (!process.env.TELEGRAM_BOT_TOKEN) {
   console.error('\n❌ TELEGRAM_BOT_TOKEN is missing!')
