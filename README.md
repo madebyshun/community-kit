@@ -172,6 +172,26 @@ Users claim tokens via `/rewards` → direct transfer to their wallet.
 
 ---
 
+## After Purchase
+
+After subscribing via [@blockyagent_bot](https://t.me/blockyagent_bot), you'll receive a license key:
+
+```
+🔑 Your License Key:
+ck_seed_1mo_A3F9B2C1
+```
+
+Add it to your `.env`:
+```env
+COMMUNITY_KIT_LICENSE=ck_seed_1mo_A3F9B2C1
+```
+
+Restart your bot → features unlock automatically. No manual config needed.
+
+Check your license anytime: `/my_license` in the bot.
+
+---
+
 ## Activate Paid Features
 
 When a customer upgrades, edit their `config.json`:
