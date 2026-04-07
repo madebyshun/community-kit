@@ -1,13 +1,24 @@
 {
-  "name": "blocky-builder-bot",
-  "version": "1.1.0",
-  "description": "Blocky Studio Telegram bot - search builders on Base blockchain",
+  "name": "blueagent-community-kit",
+  "version": "1.2.0",
+  "description": "Launch your own AI-powered Telegram community in 5 minutes.",
   "main": "dist/index.js",
+  "bin": {
+    "blueagent": "./bin/init.js"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "init": "node bin/init.js"
+  },
+  "keywords": ["telegram", "bot", "community", "base", "web3", "ai", "points", "leaderboard"],
+  "author": "Blue Agent <https://x.com/blocky_agent>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/madebyshun/community-kit"
   },
   "dependencies": {
     "axios": "^1.13.6",

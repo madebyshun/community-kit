@@ -16,6 +16,18 @@ process.on('unhandledRejection', (reason: any) => {
   console.error('[UNHANDLED REJECTION]', reason?.message || reason)
 })
 
+// ── Startup validation ──
+if (!process.env.TELEGRAM_BOT_TOKEN) {
+  console.error('\n❌ TELEGRAM_BOT_TOKEN is missing!')
+  console.error('   → Copy .env.example to .env and fill in your bot token.')
+  console.error('   → Get a token from @BotFather on Telegram.\n')
+  process.exit(1)
+}
+if (!process.env.OWNER_TELEGRAM_ID) {
+  console.warn('⚠️  OWNER_TELEGRAM_ID not set — admin commands will not work.')
+  console.warn('   → Get your ID from @userinfobot on Telegram.')
+}
+
 // ── Load config ──
 const CONFIG_FILE = path.join(__dirname, '..', 'config.json')
 const CFG = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'))
@@ -80,6 +92,26 @@ const NEYNAR_API_KEY = process.env.NEYNAR_API_KEY || ''
 const BASESCAN_API = process.env.BASESCAN_API_KEY || ''
 
 const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true })
+
+// ── Hello World Banner ──
+bot.getMe().then(me => {
+  console.log('\n🟦 Blue Agent Community Kit')
+  console.log('────────────────────────────────')
+  console.log(`✅ Bot online: @${me.username}`)
+  console.log(`📌 Project: ${CFG.project.name} (${CFG.token.symbol})`)
+  console.log(`🏷️  Tier: ${TIER}`)
+  console.log(`💬 Add @${me.username} to your group and type /start`)
+  console.log('────────────────────────────────\n')
+  if (!process.env.REWARD_WALLET_PRIVATE_KEY) {
+    console.warn('⚠️  REWARD_WALLET_PRIVATE_KEY not set — token rewards disabled.')
+  }
+  if (!process.env.BANKR_LLM_KEY) {
+    console.warn('⚠️  BANKR_LLM_KEY not set — AI features will use fallback responses.')
+  }
+}).catch(() => {
+  console.error('❌ Could not connect to Telegram. Check your TELEGRAM_BOT_TOKEN.')
+  process.exit(1)
+})
 
 // =======================
 // REWARD WALLET — direct ERC20 transfer (bypass Bankr whitelist)
